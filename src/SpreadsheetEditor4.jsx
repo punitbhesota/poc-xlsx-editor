@@ -22,16 +22,13 @@ function SE4() {
       try {
         await workbook.xlsx.load(arrayBuffer);
 
-        // Make your updates here. For example, updating the first cell of the first sheet:
         const worksheet = workbook.getWorksheet(1);
         const cell = worksheet.getCell('A1');
         cell.value = 'Updated Value';
 
-        // Save the updated workbook to a Blob
         const updatedWorkbook = await workbook.xlsx.writeBuffer();
         const blob = new Blob([updatedWorkbook], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-        // Trigger a download of the updated file
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'updated_file.xlsx';
