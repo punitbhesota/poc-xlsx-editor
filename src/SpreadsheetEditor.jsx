@@ -38,18 +38,24 @@ const SpreadsheetEditor = () => {
     saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'updated_spreadsheet.xlsx');
   };
 
+  const paddedData = data.map(row => (
+    row.length < 10 ? [...row, ...Array(10- row.length).fill('')] : row
+  ));
+  console.log("hello",data)
+
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
       {data.length > 0 && (
         <HotTable
-          data={data}
+          data={paddedData}
           colHeaders={true}
           rowHeaders={true}
           width="800"
           height="400"
           ref={hotTableComponent}
           licenseKey="non-commercial-and-evaluation"
+          fixedColumnsLeft={10} 
         />
       )}
       <button onClick={handleFileDownload}>Download Updated File</button>
