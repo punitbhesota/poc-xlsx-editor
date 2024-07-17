@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortune-sheet/core": "^0.19.10",
+    "@fortune-sheet/react": "^0.19.10",
     "@handsontable/react": "^14.4.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "handsontable": "^14.4.0",
+    "luckyexcel": "^1.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "xlsx": "^0.18.5"
