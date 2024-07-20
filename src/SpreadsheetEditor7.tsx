@@ -6,10 +6,12 @@ import {} from "@fortune-sheet/core";
 import "@fortune-sheet/react/dist/index.css"
 //@ts-ignore
 import LuckyExcel from 'luckyexcel'
+import { getDriveId, getDriveItems, getSiteId, getToken } from './apis';
 
 const Spreadsheet = () => {
   const ref = useRef<any>()
   const [sheetData, setSheetData] = useState([])
+  const [driveItems,setDriveItems] = useState([])
 
   useEffect(() => {
     if (ref && ref.current) {
@@ -56,6 +58,25 @@ const Spreadsheet = () => {
       })
     });
   }
+
+  // const fetchDriveItems = async () => {
+  //   const token = await getToken();
+  //   if(token){
+  //     const siteId = await getSiteId(token);
+  //     if(siteId){
+  //       const driveId = await getDriveId(token, siteId);
+  //       if(driveId){
+  //         const driveItems = await getDriveItems(token,driveId);
+  //         setDriveItems(driveItems)
+  //       }
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchDriveItems();
+  // }, []);
+
 
   // const handleJsonToExcel = () => {
   //   const xlsx = require("xlsx")//npm install xlsx
