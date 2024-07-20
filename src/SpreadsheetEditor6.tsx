@@ -10,6 +10,8 @@ import LuckyExcel from 'luckyexcel'
 const Spreadsheet = () => {
   const ref = useRef<any>()
   const [sheetData, setSheetData] = useState([])
+
+  
   useEffect(() => {
     if(ref && ref.current) {
       console.log(ref.current.getAllSheets())

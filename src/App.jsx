@@ -1,5 +1,5 @@
 import './App.css'
-import SpreadsheetEditor from './SpreadsheetEditor6'
+import SpreadsheetEditor from './SpreadsheetEditor7'
 
 function App() {
 
