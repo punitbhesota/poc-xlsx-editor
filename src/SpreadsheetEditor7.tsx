@@ -10,14 +10,46 @@ import { getDriveId, getDriveItems, getSiteId, getToken } from './apis';
 
 const Spreadsheet = () => {
   const ref = useRef<any>()
-  const [sheetData, setSheetData] = useState([])
+  const [sheetData, setSheetData] = useState<any>([])
   const [driveItems,setDriveItems] = useState([])
+  const [mergeInfo, setMergeInfo] = useState()
+  const [newData, setNewData] = useState()
 
   useEffect(() => {
     if (ref && ref.current) {
       console.log(ref.current.getAllSheets())
+      if(sheetData.length > 0) {
+        setMergeInfo(sheetData[0].config.merge)
+      }
     }
   }, [sheetData])
+
+
+  useEffect(() => {
+    if(mergeInfo) {
+      Object.keys(mergeInfo).forEach(key => {
+        const merge: any = mergeInfo[key]
+        const startCellAddressR = merge.r
+        const startCellAddressC = merge.c
+        const endCellAddressR = merge.r + merge.rs - 1
+        const endCellAddressC = merge.c + merge.cs - 1
+        if(ref && ref.current) {
+          console.log("MERGING CELL")
+          ref.current.mergeCells([
+            {row: [startCellAddressR, endCellAddressR], column: [startCellAddressC, endCellAddressC]}
+          ], 'merge-horizontal')
+        }
+      })
+    }
+  }, [mergeInfo])
+
+  const convertExport = () => {
+    console.log("CALLED", ref.current.getAllSheets()[0].data)
+    LuckyExcel.transformLuckyToExcel(ref.current.getAllSheets(), (exportJson, luckysheetfile) => {
+      console.log("🚀 ~ LuckyExcel.transformLuckyToExcel ~ luckysheetfile:", luckysheetfile)
+      console.log("🚀 ~ LuckyExcel.transformLuckyToExcel ~ exportJson:", exportJson)
+    })
+  }
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target;
@@ -30,6 +62,7 @@ const Spreadsheet = () => {
     LuckyExcel.transformExcelToLucky(file, function(exportJson, luckysheetfile) {
       console.log("====", exportJson.sheets)
       setSheetData(exportJson.sheets)
+      console.log("🚀 ~ LuckyExcel.transformExcelToLucky ~ exportJson.sheets:", exportJson.sheets)
 
       // Read dropdown options and merged cells
       exportJson.sheets.forEach((sheet: any) => {
@@ -103,7 +136,7 @@ const Spreadsheet = () => {
     <div style={{height: '100vh'}}>
       {sheetData.length > 0 ? <>
         <Workbook ref={ref} data={[...sheetData]} />
-        <button>Export</button>
+        <button onClick={convertExport}>Export</button>
       </> : <input type="file" onChange={onChangeHandler} />}
     </div>
   )
