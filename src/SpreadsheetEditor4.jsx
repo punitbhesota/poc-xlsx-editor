@@ -23,6 +23,7 @@ function SE4() {
         await workbook.xlsx.load(arrayBuffer);
 
         const worksheet = workbook.getWorksheet(1);
+        console.log("🚀 ~ reader.onload= ~ worksheet:", worksheet)
         const cell = worksheet.getCell('A1');
         cell.value = 'Updated Value';
 

@@ -6,7 +6,9 @@ import {} from "@fortune-sheet/core";
 import "@fortune-sheet/react/dist/index.css"
 //@ts-ignore
 import LuckyExcel from 'luckyexcel'
+import Exceljs from "exceljs"
 import { getDriveId, getDriveItems, getSiteId, getToken } from './apis';
+import Stream from "stream"
 
 const Spreadsheet = () => {
   const ref = useRef<any>()
@@ -51,13 +53,16 @@ const Spreadsheet = () => {
     })
   }
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target;
     if (!input.files?.length) {
       return;
     }
     const file = input.files[0];
-    console.log(file);
+    const workbook = new Exceljs.Workbook();
+    await workbook.xlsx.readFile("/Users/ayushagrawal/Documents/Eqaim/excel/poc-xlsx-editor/src/spread.xlsx");
+    const sheet = workbook.getWorksheet("Sheet 1");
+    console.log("🚀 ~ onChangeHandler ~ sheet:", sheet)
     //@ts-ignore
     LuckyExcel.transformExcelToLucky(file, function(exportJson, luckysheetfile) {
       console.log("====", exportJson.sheets)
